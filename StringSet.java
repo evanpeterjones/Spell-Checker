@@ -1,3 +1,4 @@
+import java.lang.StringBuilder;
 /**
  * This is a string set data structure, that is implemented as a Hash Table. 
  * This data structure supports operations insert, find and print - that insert a new 
@@ -41,8 +42,10 @@ public class StringSet {
     public boolean find(String key) {
 	    StringNode temp;
     	if ((temp = table[hash(key)]) != null) {
-            while (temp.getKey() != key) {
-                System.out.println(temp.getKey());
+            System.out.println();
+            String t = temp.getKey();
+            while (t != key && temp.getNext() != null) {
+                System.out.println(t);
                 temp = temp.getNext();
             }
             if (temp.getKey() == null) { return false; }
@@ -66,9 +69,8 @@ public class StringSet {
     private int hash(String k) {
         int h = 0;    
         for (int i = 0; i < k.length(); i++) {
-            h += (Math.pow(17.0, (double)(k.length()-i)) * ((int)k.charAt(i))) % numelements;
+            h += (Math.pow(17.0, (double)(k.length()-i)) * ((int)k.charAt(i)));
         }    
-        return h;
+        return h % size;
     }
-
 }

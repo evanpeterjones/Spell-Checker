@@ -34,10 +34,10 @@ public class SpellChecker {
         else {
 	  			System.out.println("Suggesting alternatives ...");
           // TODO: Code to do the spell checker. Look into the StringSet for all possible alternatives of the input word mis-spelled by one character.
-          for (char letter : word.toCharArray()) {
-            for ( int i = 0; i < 26 ; i++ ) {
-              String variation = word.substring(0, i) + (a+i) + (word.substring(i, word.length()));
-              if (x.find(variation)) {
+          for (char letter : word.toCharArray()) {            
+            for ( int i = 0; i < 26 ; i++ ) {           
+              StringBuilder variation = new StringBuilder(word); variation.setCharAt(i, (char)((int)a+i));
+              if (x.find(variation.toString())) {
                 System.out.println(variation);
               }
             }
