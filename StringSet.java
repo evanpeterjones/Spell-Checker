@@ -1,76 +1,52 @@
-import java.lang.StringBuilder;
-/**
- * This is a string set data structure, that is implemented as a Hash Table. 
- * This data structure supports operations insert, find and print - that insert a new 
- * String, finds a String key and prints the contents of the data structure resp.
- */
+import java.lang.Math;
+
 public class StringSet {
 
-    StringNode [] table;	// Hash table - collisions resolved through chaining.
-    int numelements;	// Number of elements actually stored in the structure.
-    int size;					// Allocated memory (size of the hash table).
+  StringNode [] table;	// Hash table - collisions resolved through chaining.
+  int numelements;	// Number of elements actually stored in the structure.
+  int size;					// Allocated memory (size of the hash table).
 
-    /** 
-     * Constructur: initilaizes numelements, size and initial table size.
-     */
-    public StringSet() {
-    	numelements = 0;
-    	size = 100;
-    	table = new StringNode[size];
-    }
+  public StringSet() {
+    numelements = 0;
+    size = 100;
+    table = new StringNode[size];
+  }
 
-    /*
-     * inserts a new key into the set. Inserts it at the head of the linked list given by its hash value.
-     */
-    public void insert(String key) {
-    	int index = hash(key);
-    	if (numelements == size) {
-	        //TODO: need to expand the hash table and rehash its contents.
-	    }
-	    //TODO: Code for actual insert.
-        if (table[index] == null) {
-            table[hash(key)] = new StringNode(key, null);
-        } else {
-            StringNode temp = table[hash(key)]; 
-            while ((temp = temp.getNext()) != null) {}
-        }
-    }
+  public void insert(String key) {
+      if (numelements == size) {}
+      int index = hash(key);
+      table[index] = new StringNode(key, table[index]);
+  }
 
-    /*
-     * finds if a String key is present in the data structure. Returns true if found, else false.
-     */
-    public boolean find(String key) {
-	    StringNode temp;
-    	if ((temp = table[hash(key)]) != null) {
-            System.out.println();
-            String t = temp.getKey();
-            while (t != key && temp.getNext() != null) {
-                System.out.println(t);
-                temp = temp.getNext();
-            }
-            if (temp.getKey() == null) { return false; }
-            return true;
-    	}return false;
-    }
+  public boolean find(String key) {
+      int i = hash(key);
+      for (StringNode curr = table[i]; curr != null; curr = curr.getNext()) {
+          if (key.equals(curr.getKey())) {
+              return true;
+          }
+      } return false;
+  }
 
-    /*
-     * Prints the contents of the hash table.
-     */
-    public void print() {        
-        for (StringNode temp : table) {
-            for (; temp.getKey() != null; temp=temp.getNext())
-                System.out.println(temp.getKey());
-        }
-    }
+  public void print() {
+      StringNode t;
+      for (StringNode k : table) {
+          t = k;
+          do {
+              System.out.println(t.getKey());
+              t = t.getNext();
+          } while (t.getNext() != null);
+      }
+  }
 
-    /*
-     * The hash function that returns the index into the hash table for a string k.
-     */
-    private int hash(String k) {
-        int h = 0;    
-        for (int i = 0; i < k.length(); i++) {
-            h += (Math.pow(17.0, (double)(k.length()-i)) * ((int)k.charAt(i)));
-        }    
-        return h % size;
-    }
+  /*
+   * hash function returns the index into the hash table for a string k.
+   */
+  public int hash(String k) {
+      int h = 0;
+      for (int i = 0; i < k.length(); i++) {
+          h = (33 * h + k.charAt(i));
+      }
+      return (Math.abs(h) % size);
+  }
+
 }
